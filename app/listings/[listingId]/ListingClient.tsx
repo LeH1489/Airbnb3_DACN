@@ -2,7 +2,7 @@
 
 import { PredefinedCategories } from "@/app/components/navbar/Categories";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import { Listing, Reservation, User } from "@prisma/client";
+import { Listing, Reservation, Review, User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
@@ -13,6 +13,13 @@ import ListingHead from "@/app/components/listings/ListingHead";
 import ListingInfo from "@/app/components/listings/ListingInfo";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import { Range } from "react-date-range";
+import Heading from "@/app/components/Heading";
+import Star from "./Star";
+import Reviews from "./Reviews";
+import Input from "@/app/components/inputs/Input";
+import { FullReviewType } from "@/app/types";
+import useListing from "@/app/hooks/useListing";
+import ReiewInput from "./ReiewInput";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -104,6 +111,9 @@ const ListingClient: React.FC<ListingClienProps> = ({
     }
   }, [dateRange, listing.price]);
 
+  //get listing by swr
+  const { data: fetchedListing } = useListing(listing.id as string);
+
   return (
     <Container>
       <div className="max-w-screen-lg mx-auto">
@@ -140,6 +150,28 @@ const ListingClient: React.FC<ListingClienProps> = ({
                 disabledDates={disabledDates}
               />
             </div>
+          </div>
+          <div className="mt-5 mb-5">
+            <hr />
+          </div>
+
+          {/* listingStarReview */}
+          <div>
+            <Star />
+          </div>
+
+          {/* listingReview */}
+          <div>
+            <Reviews reviews={fetchedListing?.reviews} />
+          </div>
+
+          {/* ReviewInput */}
+          <div>
+            <ReiewInput
+              placeholder="Help others by sharing your feedback. Write a review now..."
+              listingId={listing.id}
+              currentUser={currentUser!}
+            />
           </div>
         </div>
       </div>

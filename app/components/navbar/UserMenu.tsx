@@ -23,10 +23,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleOpen = useCallback(() => {
-    setIsOpen((prevValue) => !prevValue);
-  }, [isOpen]);
-
   const onRent = useCallback(() => {
     if (!currentUser) {
       return loginModal.onOpen();
@@ -34,6 +30,24 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 
     rentModal.onOpen();
   }, [currentUser, loginModal, rentModal]);
+
+  //dropdown
+  //Start: close the Usermenu when user clicks outside of it
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  //End: close the Usermenu when user clicks outside of it
 
   return (
     <div className="relative">
@@ -61,7 +75,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
         </div>
 
         <div
-          onClick={toggleOpen}
+          onClick={() => setIsOpen((prev) => !prev)}
           className="
       flex
       flex-row
@@ -80,24 +94,29 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar />
+            <Avatar src={currentUser?.image} />
           </div>
         </div>
       </div>
       {isOpen && (
         <div
+          ref={menuRef}
           className="
         absolute 
         bg-white
         rounded-xl 
-        shadow-lg
+        shadow-xl
+        drop-shadow-2xl
         w-[40vw]
-        md:w-3/4
+        md:w-4/5
         overflow-hidden
         right-0
         top-12
         text-sm
         tracking-wider
+        z-20
+        border-neutral-300
+        border-none
         "
         >
           <div className="flex flex-col cursor-pointer">
@@ -105,19 +124,27 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
               <>
                 <MenuItem
                   onClick={() => router.push("/trips")}
-                  label="My trips"
+                  label="Messages"
+                  bold
+                />
+                <MenuItem
+                  onClick={() => router.push("/trips")}
+                  label="Trips"
+                  bold
                 />
                 <MenuItem
                   onClick={() => router.push("/favorites")}
-                  label="My favorites"
+                  label="Wishlists"
+                  bold
                 />
+                <hr />
                 <MenuItem
                   onClick={() => router.push("/reservations")}
-                  label="My reservations"
+                  label="Reservations"
                 />
                 <MenuItem
                   onClick={() => router.push("/properties")}
-                  label="My properties"
+                  label="Manage listings"
                 />
                 <MenuItem onClick={rentModal.onOpen} label="Gobnb your home" />
                 <hr />

@@ -9,6 +9,7 @@ import LoginModal from "./components/modals/LoginModal";
 import getCurrentUser from "./actions/getCurrentUser";
 import RentModal from "./components/modals/RentModal";
 import SearchModal from "./components/modals/SearchModal";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 const inter = Nunito({ subsets: ["latin"] });
 

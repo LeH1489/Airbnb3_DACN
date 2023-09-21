@@ -1,9 +1,10 @@
 import Loader from "./components/Loader";
+import LoadingModal from "./components/LoadingModal";
 
 const loading = () => {
   return (
     <div>
-      <Loader />
+      <LoadingModal />
     </div>
   );
 };

@@ -59,10 +59,11 @@ const Search = () => {
     border-[1px]
     py-1.5
     rounded-full
-    shadow-md
+    shadow
     hover:shadow-lg
     transition
-     cursor-pointer
+    cursor-pointer
+    drop-shadow-sm
     "
     >
       <div
