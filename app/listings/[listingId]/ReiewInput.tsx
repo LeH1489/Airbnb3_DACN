@@ -19,10 +19,6 @@ const ReiewInput: React.FC<ReviewProps> = ({
   listingId,
   currentUser,
 }) => {
-  if (!currentUser) {
-    return null;
-  }
-
   const [isLoading, setIsLoading] = useState(false);
   const [body, setBody] = useState("");
 
@@ -46,6 +42,10 @@ const ReiewInput: React.FC<ReviewProps> = ({
       setIsLoading(false);
     }
   }, [body, listingId]);
+
+  if (!currentUser) {
+    return null;
+  }
 
   return (
     <div className="mt-5 flex flex-col gap-y-3">
