@@ -5,6 +5,8 @@ import { User } from "@prisma/client";
 import Heading from "../Heading";
 import Image from "next/image";
 import HeartButton from "../HeartButton";
+import { useState } from "react";
+import ImageModal from "../modals/ImageModal";
 
 interface ListingHeadProps {
   title: string;
@@ -26,6 +28,14 @@ const ListingHead: React.FC<ListingHeadProps> = ({
   const { getByValue } = useCountries();
 
   const location = getByValue(locationValue);
+
+  const [imageModalOpen, setImageModalOpen] = useState(false);
+  const [srcEachImg, setSrcEachImg] = useState<string | null>(null);
+
+  const setImageModalOpenEachImage = (src: string) => {
+    setImageModalOpen(true);
+    setSrcEachImg(src);
+  };
 
   return (
     <>
@@ -60,7 +70,14 @@ const ListingHead: React.FC<ListingHeadProps> = ({
                 : ""
             }`}
           >
+            <ImageModal
+              key={index}
+              src={srcEachImg}
+              isOpen={imageModalOpen}
+              onClose={() => setImageModalOpen(false)}
+            />
             <Image
+              onClick={() => setImageModalOpenEachImage(imageUrl)}
               alt={`Upload ${index + 1}`}
               layout="fill"
               objectFit="cover"

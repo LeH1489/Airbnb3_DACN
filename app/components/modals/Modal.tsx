@@ -5,7 +5,7 @@ import { IoMdClose } from "react-icons/io";
 import { AiOutlineClose } from "react-icons/ai";
 import Button from "../Button";
 
-interface ModalProps {
+interface Modal2Props {
   isOpen?: boolean;
   onClose: () => void;
   onSubmit: () => void;
@@ -18,7 +18,7 @@ interface ModalProps {
   secondaryActionLable?: string; //name of second button
 }
 
-const Modal: React.FC<ModalProps> = ({
+const Modal2: React.FC<Modal2Props> = ({
   isOpen,
   onClose,
   onSubmit,
@@ -136,4 +136,4 @@ const Modal: React.FC<ModalProps> = ({
   );
 };
 
-export default Modal;
+export default Modal2;

@@ -10,6 +10,8 @@ import getCurrentUser from "./actions/getCurrentUser";
 import RentModal from "./components/modals/RentModal";
 import SearchModal from "./components/modals/SearchModal";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import AuthContext from "./context/AuthContext";
+import ActiveStatus from "./components/ActiveStatus";
 
 const inter = Nunito({ subsets: ["latin"] });
 
@@ -28,13 +30,16 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ToasterProvider />
-        <SearchModal />
-        <RentModal />
-        <LoginModal />
-        <RegisterModal />
-        <Navbar currentUser={currentUser!} />
-        <div className="pt-28 pb-20">{children}</div>
+        <AuthContext>
+          <ToasterProvider />
+          <SearchModal />
+          <RentModal />
+          <LoginModal />
+          <RegisterModal />
+          <ActiveStatus />
+          <Navbar currentUser={currentUser!} />
+          <div className="pt-24 h-full">{children}</div>
+        </AuthContext>
       </body>
     </html>
   );

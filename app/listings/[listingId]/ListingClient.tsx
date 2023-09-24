@@ -17,7 +17,6 @@ import Heading from "@/app/components/Heading";
 import Star from "./Star";
 import Reviews from "./Reviews";
 import Input from "@/app/components/inputs/Input";
-import { FullReviewType } from "@/app/types";
 import useListing from "@/app/hooks/useListing";
 import ReiewInput from "./ReiewInput";
 
@@ -116,7 +115,7 @@ const ListingClient: React.FC<ListingClienProps> = ({
 
   return (
     <Container>
-      <div className="max-w-screen-lg mx-auto">
+      <div className="max-w-screen-xl mx-auto">
         <div className="flex flex-col gap-2">
           <ListingHead
             title={listing.title}

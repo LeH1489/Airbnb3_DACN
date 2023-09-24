@@ -9,6 +9,7 @@ interface ButtonProps {
   disabled?: boolean;
   small?: boolean; //for cancel reservation, delete properties
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  danger?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -18,6 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   small,
   onClick,
+  danger,
 }) => {
   return (
     <button
