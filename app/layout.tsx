@@ -12,6 +12,7 @@ import SearchModal from "./components/modals/SearchModal";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import AuthContext from "./context/AuthContext";
 import ActiveStatus from "./components/ActiveStatus";
+import { CrispProvider } from "./components/crisp-provider";
 
 const inter = Nunito({ subsets: ["latin"] });
 
@@ -31,6 +32,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthContext>
+          <CrispProvider />
           <ToasterProvider />
           <SearchModal />
           <RentModal />
