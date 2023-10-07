@@ -13,12 +13,16 @@ import ListingHead from "@/app/components/listings/ListingHead";
 import ListingInfo from "@/app/components/listings/ListingInfo";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import { Range } from "react-date-range";
-import Heading from "@/app/components/Heading";
 import Star from "./Star";
 import Reviews from "./Reviews";
-import Input from "@/app/components/inputs/Input";
 import useListing from "@/app/hooks/useListing";
 import ReiewInput from "./ReiewInput";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 const initialDateRange = {
   startDate: new Date(),
@@ -66,32 +70,41 @@ const ListingClient: React.FC<ListingClienProps> = ({
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
 
   //func to create a reservation
-  const onCreateReservation = useCallback(() => {
+  const onCreateReservation = useCallback(async () => {
     if (!currentUser) {
       return loginModal.onOpen();
     }
 
     setIsLoading(true); //not allow user to interact
 
-    axios
-      .post("/api/reservations", {
-        totalPrice,
-        startDate: dateRange.startDate,
-        endDate: dateRange.endDate,
-        listingId: listing?.id,
-      })
-      .then(() => {
-        toast.success("Reservation success");
-        setDateRange(initialDateRange);
-        router.push("/trips");
-        router.refresh();
-      })
-      .catch(() => {
-        toast.error("Reservation failed!");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    // axios
+    //   .post(`/api/reservations`, {
+    //     totalPrice,
+    //     startDate: dateRange.startDate,
+    //     endDate: dateRange.endDate,
+    //     listingId: listing?.id,
+    //   })
+    //   .then(() => {
+    //     toast.success("Reservation success");
+    //     setDateRange(initialDateRange);
+    //     router.push("/trips");
+    //     router.refresh();
+    //   })
+    //   .catch(() => {
+    //     toast.error("Reservation failed!");
+    //   })
+    //   .finally(() => {
+    //     setIsLoading(false);
+    //   });
+
+    const resonse = await axios.post(`/api/reservations/checkout`, {
+      totalPrice,
+      startDate: dateRange.startDate,
+      endDate: dateRange.endDate,
+      listingId: listing?.id,
+    });
+
+    window.location.assign(resonse.data.url);
   }, [totalPrice, dateRange, listing?.id, router, currentUser, loginModal]);
 
   //changing the total price depending on how many days user select
@@ -114,67 +127,69 @@ const ListingClient: React.FC<ListingClienProps> = ({
   const { data: fetchedListing } = useListing(listing.id as string);
 
   return (
-    <Container>
-      <div className="max-w-screen-xl mx-auto">
-        <div className="flex flex-col gap-2">
-          <ListingHead
-            title={listing.title}
-            imageSrc={listing.imageSrc}
-            locationValue={listing.locationValue}
-            id={listing.id}
-            currentUser={currentUser}
-            address={listing.address}
-          />
-          <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
-            <div className="col-span-4">
-              <ListingInfo
-                user={listing.user}
-                category={category}
-                description={listing.description}
-                roomCount={listing.roomCount}
-                guestCount={listing.guestCount}
-                bathroomCount={listing.bathroomCount}
-                locationValue={listing.locationValue}
-                address={listing.address}
-              />
-            </div>
-            <div className="order-first mb-10 md:order-last md:col-span-3">
-              <ListingReservation
-                price={listing.price}
-                totalPrice={totalPrice}
-                onChangeDate={(value) => setDateRange(value)}
-                dateRange={dateRange}
-                onSubmit={onCreateReservation}
-                disabled={isLoading}
-                disabledDates={disabledDates}
-              />
-            </div>
-          </div>
-          <div className="mt-5 mb-5">
-            <hr />
-          </div>
-
-          {/* listingStarReview */}
-          <div>
-            <Star />
-          </div>
-
-          {/* listingReview */}
-          <div>
-            <Reviews reviews={fetchedListing?.reviews} />
-          </div>
-
-          {/* ReviewInput */}
-          <div>
-            <ReiewInput
-              placeholder="Help others by sharing your feedback. Write a review now..."
-              listingId={listing.id}
-              currentUser={currentUser!}
+    <>
+      <Container>
+        <div className="max-w-screen-xl mx-auto">
+          <div className="flex flex-col gap-2">
+            <ListingHead
+              title={listing.title}
+              imageSrc={listing.imageSrc}
+              locationValue={listing.locationValue}
+              id={listing.id}
+              currentUser={currentUser}
+              address={listing.address}
             />
+            <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
+              <div className="col-span-4">
+                <ListingInfo
+                  user={listing.user}
+                  category={category}
+                  description={listing.description}
+                  roomCount={listing.roomCount}
+                  guestCount={listing.guestCount}
+                  bathroomCount={listing.bathroomCount}
+                  locationValue={listing.locationValue}
+                  address={listing.address}
+                />
+              </div>
+              <div className="order-first mb-10 md:order-last md:col-span-3">
+                <ListingReservation
+                  price={listing.price}
+                  totalPrice={totalPrice}
+                  onChangeDate={(value) => setDateRange(value)}
+                  dateRange={dateRange}
+                  onSubmit={onCreateReservation}
+                  disabled={isLoading}
+                  disabledDates={disabledDates}
+                />
+              </div>
+            </div>
+            <div className="mt-5 mb-5">
+              <hr />
+            </div>
+
+            {/* listingStarReview */}
+            <div>
+              <Star />
+            </div>
+
+            {/* listingReview */}
+            <div>
+              <Reviews reviews={fetchedListing?.reviews} />
+            </div>
+
+            {/* ReviewInput */}
+            <div>
+              <ReiewInput
+                placeholder="Help others by sharing your feedback. Write a review now..."
+                listingId={listing.id}
+                currentUser={currentUser!}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </>
   );
 };
 
