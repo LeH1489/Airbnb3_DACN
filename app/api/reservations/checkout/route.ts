@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     const session = await stripe.checkout.sessions.create({
       line_items,
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/listings/${listing.id}?success=1`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/trips?success=1`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/listings/${listing.id}?canceled=1`,
       metadata: {
         listingId: listing.id,
