@@ -19,6 +19,7 @@ import useListing from "@/app/hooks/useListing";
 import ReiewInput from "./ReiewInput";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { useConfettiStore } from "@/app/hooks/useConfettiStore";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -43,6 +44,7 @@ const ListingClient: React.FC<ListingClienProps> = ({
 }) => {
   const loginModal = useLoginModal();
   const router = useRouter();
+  const confetti = useConfettiStore();
 
   //lấy gián tiếp chứ không lấy trực tiếp từ listing.category bởi vì ta sẽ lấy cả label, icon, desc
   //còn listing.category chỉ trả về mỗi tên
@@ -105,6 +107,7 @@ const ListingClient: React.FC<ListingClienProps> = ({
     });
 
     window.location.assign(resonse.data.url);
+    confetti.onOpen();
   }, [totalPrice, dateRange, listing?.id, router, currentUser, loginModal]);
 
   //changing the total price depending on how many days user select

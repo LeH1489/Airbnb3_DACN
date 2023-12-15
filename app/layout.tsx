@@ -13,6 +13,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import AuthContext from "./context/AuthContext";
 import ActiveStatus from "./components/ActiveStatus";
 import { CrispProvider } from "./components/crisp-provider";
+import ConfettiProvider from "./providers/ConfettiProvider";
 
 const inter = Nunito({ subsets: ["latin"] });
 
@@ -33,6 +34,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <AuthContext>
           <CrispProvider />
+          <ConfettiProvider/>
           <ToasterProvider />
           <SearchModal />
           <RentModal />

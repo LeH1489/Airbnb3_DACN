@@ -15,6 +15,7 @@ import ImageUpload from "../inputs/ImageUpload";
 import Input from "../inputs/Input";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useConfettiStore } from "@/app/hooks/useConfettiStore";
 
 enum STEPS {
   CATEGORY_FIRST_STEP = 0,
@@ -30,6 +31,7 @@ const RentModal = () => {
   const [step, setStep] = useState(STEPS.CATEGORY_FIRST_STEP);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const confetti = useConfettiStore();
 
   const onBack = () => {
     setStep((step) => step - 1);
@@ -89,6 +91,7 @@ const RentModal = () => {
       .post("/api/listings", data)
       .then(() => {
         toast.success("Listing created");
+        confetti.onOpen();
         router.refresh();
         reset(); //when user complete the entire form ==> reset all of data
         setStep(STEPS.CATEGORY_FIRST_STEP);
