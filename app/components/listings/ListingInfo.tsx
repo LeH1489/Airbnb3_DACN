@@ -77,7 +77,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             <Avatar src={user?.image} />
             <button
               onClick={createNewConversation}
-              className="p-2  rounded-full hover:bg-neutral-200 hover:text-white"
+              className="p-2 rounded-full hover:bg-rose-500 hover:text-white transition"
             >
               Chat with host
             </button>
