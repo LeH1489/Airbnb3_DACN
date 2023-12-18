@@ -31,6 +31,7 @@ interface ListingInfoProps {
     | undefined;
   locationValue: string;
   address: string;
+  communicationLink: string | null;
 }
 
 const ListingInfo: React.FC<ListingInfoProps> = ({
@@ -42,6 +43,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   category,
   locationValue,
   address,
+  communicationLink,
 }) => {
   const router = useRouter();
 
@@ -104,6 +106,18 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           {description}
         </div>
         <hr />
+        {communicationLink?.length && (
+          <>
+            <div
+              className="text-lg font-light text-neutral-500"
+              style={{ whiteSpace: "pre-line" }}
+            >
+              <span className="font-bold">Communication Room:</span>{" "}
+              {communicationLink}
+            </div>
+            <hr />
+          </>
+        )}
         <Heading title="Where you will be" />
         <Map center={coordinates} />
         <p className="font-semibold">{address}</p>

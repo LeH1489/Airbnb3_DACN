@@ -60,6 +60,7 @@ const RentModal = () => {
       title: "",
       description: "",
       address: "",
+      communicationLink: "",
     },
   });
 
@@ -71,6 +72,7 @@ const RentModal = () => {
   const watchBathroomCountValue = watch("bathroomCount");
   const watchImageSrcValue = watch("imageSrc");
   const watchAddressValue = watch("address");
+  const watchCommunicationLinkValue = watch("communicationLink");
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -242,6 +244,14 @@ const RentModal = () => {
         <Input
           id="address"
           label="Address"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+        <Input
+          id="communicationLink"
+          label="Communication Link"
           disabled={isLoading}
           register={register}
           errors={errors}

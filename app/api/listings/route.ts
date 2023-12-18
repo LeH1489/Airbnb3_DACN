@@ -24,6 +24,7 @@ export async function POST(request: Request) {
       location,
       price,
       address,
+      communicationLink,
     } = bodyFromRequest;
 
     const newListing = await prisma.listing.create({
@@ -38,6 +39,7 @@ export async function POST(request: Request) {
         locationValue: location.value,
         price: parseInt(price, 10),
         address,
+        communicationLink,
         userId: currentUser.id,
       },
     });

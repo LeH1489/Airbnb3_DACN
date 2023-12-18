@@ -153,6 +153,7 @@ const ListingClient: React.FC<ListingClienProps> = ({
                   bathroomCount={listing.bathroomCount}
                   locationValue={listing.locationValue}
                   address={listing.address}
+                  communicationLink={listing.communicationLink}
                 />
               </div>
               <div className="order-first mb-10 md:order-last md:col-span-3">
